@@ -4,7 +4,7 @@ console.log(clc.red.bgBlack.bold('Hello Dave. You\'re Looking well today.'));
 require('dotenv').config();
 
 var venueDirectory = process.env.VENUE_DIRECTORY;
-var targetURL = 'http://theodoremichels.tech:3333/venues/' + clc.green(venueDirectory) + '/videos/';
+var targetURL = 'http://theodoremichels.tech:3333/venues/' + venueDirectory + '/videos/';
 console.log('Checking target directory: ' + targetURL);
 
 var request = require('request');
@@ -18,9 +18,11 @@ var options = {
 };
 
 function callback(error, response, body) {
+    if(error){
+        console.log(error);
+    }
     if (!error && response.statusCode == 200) {
         var info = JSON.parse(body);
-
         var newFile = false;
 
         var newFileName;
