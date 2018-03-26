@@ -1,4 +1,6 @@
-var venueDirectory = 'joes-house';
+require('dontenv').config();
+
+var venueDirectory = process.env.VENUE_DIRECTORY;
 var targetURL = 'http://theodoremichels.tech:3333/venues/' + venueDirectory + '/videos/';
 
 var request = require('request');
