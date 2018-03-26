@@ -1,0 +1,16 @@
+{
+  "name": "get-video",
+  "version": "1.0.0",
+  "description": "Check server for new videos and download them.",
+  "main": "get-video.js",
+  "scripts": {
+    "start": "node get-video.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Theodore Michels",
+  "license": "ISC",
+  "dependencies": {
+    "cli-color": "^1.2.0",
+    "request": "^2.85.0"
+  }
+}
