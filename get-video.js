@@ -1,15 +1,17 @@
-require('dontenv').config();
+var clc = require('cli-color');
+console.log(clc.red.bgBlack.bold('Hello Dave. You\'re Looking well today.'));
+
+require('dotenv').config();
 
 var venueDirectory = process.env.VENUE_DIRECTORY;
-var targetURL = 'http://theodoremichels.tech:3333/venues/' + venueDirectory + '/videos/';
+var targetURL = 'http://theodoremichels.tech:3333/venues/' + clc.green(venueDirectory) + '/videos/';
+console.log('Checking target directory: ' + targetURL);
 
 var request = require('request');
-var clc = require('cli-color');
+
 var fs = require('fs');
 
 var downloading = false;
-
-console.log(clc.red.bgBlack.bold('Hello Dave. You\'re Looking well today.'));
 
 var options = {
     url: targetURL
