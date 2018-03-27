@@ -1,3 +1,5 @@
+var videosDirectory = 'videoMapper/data/';
+
 var clc = require('cli-color');
 console.log(clc.red.bgBlack.bold('Hello Dave. You\'re Looking well today.'));
 
@@ -30,7 +32,7 @@ function callback(error, response, body) {
         for (var i = 0; i < info.length; i++) {
             var fileName = info[i];
             if (fileName != 'temp-download') {
-                if (!fs.existsSync('data/' + fileName)) {
+                if (!fs.existsSync(videosDirectory + fileName)) {
 
                     newFile = true;
                     newFileName = fileName;
@@ -50,9 +52,9 @@ function callback(error, response, body) {
                     console.log('Beginning download of '+ newFileName +', code: ' + response.statusCode);
 
                 })
-                .pipe(fs.createWriteStream('data/' + newFileName + '.tmp').on('finish', function () {
+                .pipe(fs.createWriteStream(videosDirectory + newFileName + '.tmp').on('finish', function () {
                     console.log('Finished downloading ' + newFileName);
-                    fs.rename('data/' + newFileName + '.tmp', 'data/' + newFileName, function(){
+                    fs.rename(videosDirectory + newFileName + '.tmp', videosDirectory + newFileName, function(){
                         downloading = false;
                     });
                     
@@ -60,7 +62,6 @@ function callback(error, response, body) {
         }else{
             console.log(clc.blackBright('No new files found.'));
         }
-
     }
 }
 
@@ -72,8 +73,8 @@ function checkServer() {
     
 }
 
-if (!fs.existsSync('data')) {
-    fs.mkdirSync('data');
+if (!fs.existsSync(videosDirectory)) {
+    fs.mkdirSync(videosDirectory);
 }
 
 checkServer();
