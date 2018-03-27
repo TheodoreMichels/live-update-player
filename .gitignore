@@ -1,4 +1,4 @@
-/data
+/videoMapper/data
 /node_modules
 
 .env
