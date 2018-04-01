@@ -1,4 +1,4 @@
-var videosDirectory = 'videoMapper/data/';
+var videosDirectory = 'processing_mapper/data/';
 
 var clc = require('cli-color');
 console.log(clc.red.bgBlack.bold('Hello Dave. You\'re Looking well today.'));
