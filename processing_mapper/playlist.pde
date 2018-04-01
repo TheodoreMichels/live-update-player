@@ -10,7 +10,7 @@ void loadVideos(){
       // Check to see if the file has one of the accepted extensions
       if(acceptedExtensions.hasValue(getFileExtension(files[i]))){
         if(!fileNames.hasValue(files[i])){
-          println(files[i]);
+          println("Adding " + files[i] + " to playlist.");
           // And add it to the list if it does
           fileNames.append(files[i]);
           movies.add(new GLMovie(this, files[i]));

@@ -26,10 +26,11 @@ void setup() {
   assetsPath = sketchPath() + "/data";
   loadVideos();
   
-  for(int i = 0; i < fileNames.size(); i++){
-    movies.add(new GLMovie(this, fileNames.get(i)));
-    buffers.add(createGraphics(400, 300, P2D));
-  }
+  //for(int i = 0; i < fileNames.size(); i++){
+  //  movies.add(new GLMovie(this, fileNames.get(i)));
+  //  buffers.add(createGraphics(400, 300, P2D));
+  //}
+  buffers.add(createGraphics(400, 300, P2D));
 }
 
 void draw() {
@@ -59,7 +60,7 @@ void draw() {
   //  }
   //}
   
-  GLMovie currentMovie = movies.get(playListIndex);
+  GLMovie currentMovie = movies.get(0);
   PGraphics currentBuffer = buffers.get(0);
   
   if(currentMovie.available()){
@@ -71,13 +72,18 @@ void draw() {
   }
   
   if(currentMovie.time() > 0 && !currentMovie.playing()){
-    currentMovie.pause();
-    currentMovie.jump(0);
+    println("Finished playing " + fileNames.get(playListIndex));
+    //currentMovie.pause();
+    //currentMovie.jump(0);
     playListIndex++;
-    if(playListIndex >= movies.size()){
+    if(playListIndex >= fileNames.size()-1){
       playListIndex = 0;
     }
-    movies.get(playListIndex).play();
+    //movies.get(playListIndex).play();
+    println("Starting playback of " + fileNames.get(playListIndex));
+    movies.remove(0);
+    movies.add(new GLMovie(this, fileNames.get(playListIndex)));
+    movies.get(0).play();
   }
 
   // Render all of the surfaces
@@ -93,6 +99,7 @@ void draw() {
 }
 
 void addSurface(){
+  println("Adding new surface...");
   //int index = (surfaces.size()+1) % buffers.size();
   int index = 0;
   Surface newSurface = new Surface();
