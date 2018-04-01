@@ -13,7 +13,6 @@ void loadVideos(){
           println("Adding " + files[i] + " to playlist.");
           // And add it to the list if it does
           fileNames.append(files[i]);
-          movies.add(new GLMovie(this, files[i]));
         }
       }
     }
