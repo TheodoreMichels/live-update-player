@@ -15,7 +15,6 @@ void keyPressed() {
     break;
 
   case 'q':
-    addSurface();
     break;
 
     // Show the info overlay

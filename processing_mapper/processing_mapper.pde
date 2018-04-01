@@ -17,6 +17,8 @@ StringList acceptedExtensions = new StringList("mov", "mp4");
 // Show the information overlay?
 boolean showInfo = false;
 
+boolean noVideos = true;
+
 float watchRate = 1;
 
 void setup() {
@@ -24,11 +26,18 @@ void setup() {
   //fullScreen(P3D);
 
   ks = new Keystone(this);
+  ks.toggleCalibration(); // Start up showing calibration.
+
   assetsPath = sketchPath() + "/data";
-  loadVideos();
-  
-  movie = new GLMovie(this, fileNames.get(0));
-  movie.play();
+  println("Loading files from " + assetsPath);
+  updateVideoList();
+
+  // Check to see if any files were found locally.
+  if (fileNames.size() > 0) {
+    playFirstMovie();
+  } else {
+    println("No valid local files were found.");
+  }
 
   buffer = createGraphics(400, 300, P2D);
   surface = new Surface();
@@ -36,50 +45,61 @@ void setup() {
 }
 
 void draw() {
-  if(frameCount % 60 == 1){
+  if (frameCount % 60 == 1) {
     println("Checking for new files.");
-    loadVideos();
+    updateVideoList();
   }
-  
+
   background(0);
-  
-  if(movie.available()){
-    movie.read();
-    
-    buffer.beginDraw();
-    buffer.image(movie, 0, 0, 400, 300);
-    buffer.endDraw();
-  }
-  
-  if(movie.time() > 0 && !movie.playing()){
-    println("Finished playing " + fileNames.get(playListIndex));
-
-    playListIndex++;
-    println("Playlist index: " + playListIndex);
-    if(playListIndex >= fileNames.size()){
-      playListIndex = 0;
+  // If there's a frame available...
+  if (!noVideos) {
+    if (movie.available()) {
+      // Read it and draw it to the buffer
+      movie.read();
+      // Off screen buffer
+      buffer.beginDraw();
+      buffer.image(movie, 0, 0, 400, 300);
+      buffer.endDraw();
     }
-
-    println("Starting playback of " + fileNames.get(playListIndex));
-    movie.dispose();
-    movie = new GLMovie(this, fileNames.get(playListIndex));
-    movie.play();
   }
-  
+
+  if (!noVideos) {
+    // If the movie has started (time > 0) but isn't playing, it must be done.
+    if (movie.time() > 0 && !movie.playing()) {
+      println("Finished playing playlist index " + playListIndex + ":" + fileNames.get(playListIndex));
+
+      playListIndex++;
+      // If the index is greater than the files array, reset it.
+      if (playListIndex >= fileNames.size()) {
+        playListIndex = 0;
+      }
+
+      println("Starting playback of playlist index " + playListIndex + " :" + fileNames.get(playListIndex));
+      movie.dispose(); // Free up the resources from the movie.
+      // Create a new movie from the next file name and play it.
+      movie = new GLMovie(this, fileNames.get(playListIndex));
+      movie.play();
+    }
+  }
+
   surface.render();
-  
+
+  if (noVideos) {
+    textAlign(CENTER);
+    fill(255, 0, 0);
+    textSize(20);
+    text("No local videos found.", width/2, height/2);
+  }
+
   // Put this at the very end so it shows on top of everything.
   if (showInfo) {
     showInfo();
   }
-  
 }
 
-void addSurface(){
-  println("Adding new surface...");
-  //int index = (surfaces.size()+1) % buffers.size();
-  int index = 0;
-  Surface newSurface = new Surface();
+void playFirstMovie() {
+  movie = new GLMovie(this, fileNames.get(0));
+  movie.play();
 }
 
 // Show the UI
@@ -93,9 +113,5 @@ void showInfo() {
   text("Info", 0, 20);
 
   text("show/hide info: i", 0, 40);
-  text("add new surface: q", 0, 60);
   text("toggle mapping mode: m", 0, 80);
-}
-
-void myEos(){
 }
