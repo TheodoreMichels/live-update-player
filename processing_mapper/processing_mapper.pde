@@ -19,7 +19,7 @@ boolean showInfo = false;
 float watchRate = 1;
 
 void setup() {
-  size(800, 600, P3D);
+  size(400, 300, P3D);
   //fullScreen(P3D);
 
   ks = new Keystone(this);
@@ -81,6 +81,7 @@ void draw() {
     }
     //movies.get(playListIndex).play();
     println("Starting playback of " + fileNames.get(playListIndex));
+    movies.get(0).dispose();
     movies.remove(0);
     movies.add(new GLMovie(this, fileNames.get(playListIndex)));
     movies.get(0).play();
