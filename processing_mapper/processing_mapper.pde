@@ -48,6 +48,9 @@ void draw() {
   if (frameCount % 120 == 1) {
     println("Checking for new files.");
     updateVideoList();
+    if(fileNames.size() <= 0){
+      noVideos = true;
+    }
   }
 
   background(0);
@@ -89,6 +92,7 @@ void draw() {
   surface.render();
 
   if (noVideos) {
+    background(0);
     textAlign(CENTER);
     fill(255, 0, 0);
     textSize(20);
