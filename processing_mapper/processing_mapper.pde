@@ -45,7 +45,7 @@ void setup() {
 }
 
 void draw() {
-  if (frameCount % 60 == 1) {
+  if (frameCount % 120 == 1) {
     println("Checking for new files.");
     updateVideoList();
   }
@@ -66,8 +66,12 @@ void draw() {
   if (!noVideos) {
     // If the movie has started (time > 0) but isn't playing, it must be done.
     if (movie.time() > 0 && !movie.playing()) {
-      println("Finished playing playlist index " + playListIndex + ":" + fileNames.get(playListIndex));
-
+      if(!(playListIndex >= fileNames.size())){
+        println("Finished playing playlist index " + playListIndex + ":" + fileNames.get(playListIndex));
+      }else{
+        println("Playlist index out of bounds. A video was probably deleted.");
+      }
+      
       playListIndex++;
       // If the index is greater than the files array, reset it.
       if (playListIndex >= fileNames.size()) {
